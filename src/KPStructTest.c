@@ -12,6 +12,7 @@ typedef struct{
 typedef struct{
     char * name;
     char * sig;
+	char * code;
 } T_CLASS_OBJECT;
 
 typedef struct {
@@ -120,6 +121,8 @@ void addEvent( T_SA * sa, char * name){
 
 void freeSa( T_SA * sa){
 	printf("freeing memory for %s ...\n", sa->name);
+	free( sa->states);
+	free( sa->events);
 	free( sa);
 	printf("memory freed\n");
 }
