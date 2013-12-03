@@ -65,13 +65,19 @@ int main(int argc, const char* argv[]) {
 	freeSa( sa3);
 }
 
-T_SA* createSa( char* name){
-	printf("creating state machine...\n");
-    T_SA * sa = (T_SA*) malloc( sizeof( T_SA*));
+T_SA* createSa( char * name){
+	printf("creating state machine %s ...\n", name);
+    T_SA* sa = (T_SA*) malloc(sizeof( T_SA));
+
+	if(sa == NULL){
+		printf("MALLOC FAILED -> STATE MACHINE");
+		exit(1);
+	}
+
     sa->states = (T_ENUM*) calloc(20, sizeof(T_ENUM));
     sa->events = (T_ENUM*) calloc(20, sizeof(T_ENUM));
 	
-	printf( "%d, %d", sa->states, sa->events);
+	printf( "array addresses: %p, %p\n", sa->states, sa->events);
 	if(sa->states == NULL){
 		printf("CALLOC FAILED -> STATES");
 		exit(1);
@@ -91,36 +97,35 @@ T_SA* createSa( char* name){
 }
 
 void addState( T_SA * sa, char * name){
-	printf("adding state...\n");
+	printf("adding state %s ...\n", name);
 
     int i = sa->state_cnt;
     T_ENUM* state = &sa->states[i];
-    state->index = i;
-    state->name = name;
+    sa->states[i].index = i;
+    sa->states[i].name = name;
 
     ++sa->state_cnt;
 }
 
 void addEvent( T_SA * sa, char * name){
-	printf("adding event...%d\n", sa->event_cnt);
+	printf("adding event %s ...\n", name);
 
     int i = sa->event_cnt;
     T_ENUM* event = &sa->events[i];
-    event->index = i;
-    event->name = name;
+    sa->events[i].index = i;
+    sa->events[i].name = name;
 
     ++sa->event_cnt;
 }
 
 void freeSa( T_SA * sa){
-	printf("freeing memory...");
-	free( sa->states);
-	free( sa->events);
+	printf("freeing memory for %s ...\n", sa->name);
 	free( sa);
+	printf("memory freed\n");
 }
 
 void printSa( T_SA * sa){
-	printf("printing...\n");
+	printf("printing %s ...\n", sa->name);
     int i;
     printf( "sa: index = %d, name = %s, state_cnt = %d, evt_cnt = %d\n", sa->index, sa->name, sa->state_cnt, sa->event_cnt);
 
